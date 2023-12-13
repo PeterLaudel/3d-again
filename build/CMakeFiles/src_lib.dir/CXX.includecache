@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/workspaces/3d-again/src/models/3DObject.cpp
+3DObject.h
+/workspaces/3d-again/src/models/3DObject.h
+iostream
+-
+
+/workspaces/3d-again/src/models/3DObject.h
+vector
+-
+point.h
+/workspaces/3d-again/src/models/point.h
+
+/workspaces/3d-again/src/models/point.cpp
+iostream
+-
+point.h
+/workspaces/3d-again/src/models/point.h
+
+/workspaces/3d-again/src/models/point.h
+

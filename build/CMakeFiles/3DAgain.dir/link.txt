@@ -1,0 +1,1 @@
+/usr/bin/c++  -m64 -g  -m64 CMakeFiles/3DAgain.dir/main.cpp.o  -o 3DAgain  libsrc_lib.a 
