@@ -1,1 +1,0 @@
-. "/workspaces/3d-again/build/conanrunenv-debug-x86_64.sh"

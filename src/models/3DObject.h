@@ -1,3 +1,6 @@
+#ifndef __3DOBJECT__
+#define __3DOBJECT__
+
 #include <vector>
 
 #include "point.h"
@@ -10,3 +13,5 @@ public:
 private:
     std::vector<cPoint> m_points;
 };
+
+#endif /* __3DOBJECT__ */

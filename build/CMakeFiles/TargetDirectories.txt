@@ -1,6 +1,0 @@
-/workspaces/3d-again/build/CMakeFiles/edit_cache.dir
-/workspaces/3d-again/build/CMakeFiles/test.dir
-/workspaces/3d-again/build/CMakeFiles/rebuild_cache.dir
-/workspaces/3d-again/build/CMakeFiles/3DAgain_test.dir
-/workspaces/3d-again/build/CMakeFiles/3DAgain.dir
-/workspaces/3d-again/build/CMakeFiles/src_lib.dir
