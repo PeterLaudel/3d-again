@@ -34,3 +34,5 @@
 # Foders
 .vscode
 build
+
+CMakeUserPresets.json
