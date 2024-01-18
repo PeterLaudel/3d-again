@@ -30,10 +30,5 @@ protected:
 TEST_F(AStlFileLoader, AddsAllPointsTo3DObject)
 {
     std::vector<cPoint> array{{1, 2, 3}};
-    cPoint point{1, 2, 3};
-    std::vector<cPoint> test1;
-    std::vector<cPoint> test2;
-    auto points = m_o3Dobject.points();
     EXPECT_EQ(m_o3Dobject.points().size(), 36);
-    EXPECT_EQ(m_o3Dobject.points(), test2);
 };

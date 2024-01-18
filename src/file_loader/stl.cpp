@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iterator>
 #include <sstream>
+#include <optional>
 #include <numeric>
 #include <algorithm>
 #include <string>
@@ -29,14 +30,22 @@ class StlFunctor
 public:
     C3DObject operator()(C3DObject object, const Line &line)
     {
-        if (line.rfind("vertex", 0) == 0)
+        if (auto point = this->getPoint(line))
         {
-            std::stringstream ss(line);
-            cPoint point;
-            ss >> point;
-            object.addPoint(point);
+            object.addPoint(*point);
+            return object;
         }
         return object;
+    }
+
+    std::optional<cPoint> getPoint(const Line& line) {
+        if (line.rfind("vertex", 0) != 0)
+            return {};
+
+        std::stringstream ss(line);
+        cPoint point;
+        ss >> point;
+        return point;
     };
 };
 
@@ -47,5 +56,6 @@ C3DObject Stl::load(const std::string &filename)
         std::istream_iterator<Line>(istream),
         std::istream_iterator<Line>(),
         C3DObject(),
-        StlFunctor());
+        StlFunctor()
+    );
 };

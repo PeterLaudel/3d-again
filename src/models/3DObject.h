@@ -11,10 +11,9 @@ public:
     C3DObject() = default;
     ~C3DObject();
 
-    int addPoint(cPoint point)
+    void addPoint(cPoint point)
     {
-        this->m_points.emplace_back(point);
-        return m_points.size();
+        m_points.emplace_back(point);
     };
 
     std::vector<cPoint> &points() { return this->m_points; };
