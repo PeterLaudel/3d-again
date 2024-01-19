@@ -29,6 +29,5 @@ protected:
 
 TEST_F(AStlFileLoader, AddsAllPointsTo3DObject)
 {
-    std::vector<cPoint> array{{1, 2, 3}};
     EXPECT_EQ(m_o3Dobject.points().size(), 36);
 };

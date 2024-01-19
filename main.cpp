@@ -1,10 +1,9 @@
 #include <iostream>
 
 #include "src/models/3DObject.h"
-#include "src/file_loader/stl.h"
 
 int main() {
-    
-    C3DObject test;
+    std::cout << "Hello world" << std::endl;
+    // C3DObject test({cPoint(1.0,1.0,1.0)});
     return 0;
 }
