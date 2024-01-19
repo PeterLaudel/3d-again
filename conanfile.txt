@@ -1,5 +1,7 @@
 [requires]
 gtest/1.14.0
+opengl/system
+glfw/3.3.8
 
 [generators]
 CMakeDeps
