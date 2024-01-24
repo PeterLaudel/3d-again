@@ -1,32 +1,47 @@
 cmake_minimum_required(VERSION 3.28.1)
 project(3DAgain LANGUAGES CXX)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(glfw3)
 
 file(GLOB src "${PROJECT_SOURCE_DIR}/src/**/*.cpp")
 
+add_custom_target(files ALL
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  ${CMAKE_SOURCE_DIR}/tests/files
+  ${CMAKE_BINARY_DIR}/files
+)
+
+add_custom_target(shaders ALL
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  ${CMAKE_SOURCE_DIR}/src/shaders
+  ${CMAKE_BINARY_DIR}/shaders
+)
+
 include_directories(${PROJECT_SOURCE_DIR}/src)
 add_library(src_lib ${src})
 add_executable(${PROJECT_NAME} main.cpp)
-target_link_libraries(
-  ${PROJECT_NAME} 
-  src_lib
-  OpenGL::GL GLUT::GLUT glfw
-)
+
+
+add_dependencies(${PROJECT_NAME} files)
+add_dependencies(${PROJECT_NAME} shaders)
+target_link_libraries(${PROJECT_NAME} src_lib OpenGL::GL GLUT::GLUT glfw)
 
 target_include_directories(${PROJECT_NAME} PUBLIC 
   ${OPENGL_INCLUDE_DIRS}
   ${GLUT_INCLUDE_DIRS}
+  ${GLFW_INCLUDE_DIRS}
 )
+
+
 add_custom_target(
   run
   COMMAND ${PROJECT_NAME}
   DEPENDS ${PROJECT_NAME}
-  WORKING_DIRECTORY ${CMAKE_PROJECT_DIR})
-  
-  
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 find_package(GTest REQUIRED)
 enable_testing()
 

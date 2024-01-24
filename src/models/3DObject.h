@@ -9,12 +9,12 @@ class C3DObject
 {
 public:
     C3DObject() = default;
-    ~C3DObject();
+    ~C3DObject() = default;
 
     void addPoint(cPoint point)
     {
         m_points.emplace_back(point);
-    };
+    }
 
     std::vector<cPoint> &points() { return this->m_points; };
 

@@ -38,7 +38,8 @@ public:
         return object;
     }
 
-    std::optional<cPoint> getPoint(const Line& line) {
+    std::optional<cPoint> getPoint(const Line &line)
+    {
         if (line.rfind("vertex", 0) != 0)
             return {};
 
@@ -49,13 +50,15 @@ public:
     };
 };
 
-C3DObject Stl::load(const std::string &filename)
+std::optional<C3DObject> Stl::load(const std::string &filename)
 {
-    std::ifstream istream("cube_ascii.stl");
+    std::ifstream istream(filename);
+    if (!istream.is_open())
+        return {};
+
     return std::accumulate(
         std::istream_iterator<Line>(istream),
         std::istream_iterator<Line>(),
         C3DObject(),
-        StlFunctor()
-    );
+        StlFunctor());
 };

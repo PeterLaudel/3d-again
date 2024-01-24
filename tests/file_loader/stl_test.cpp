@@ -12,7 +12,7 @@
 #include "models/3DObject.h"
 
 #include "file_loader/stl.h"
-
+#include <iostream>
 using namespace testing;
 
 class AStlFileLoader : public Test
@@ -21,7 +21,9 @@ class AStlFileLoader : public Test
 protected:
     void SetUp() override
     {
-        m_o3Dobject = Stl::load("cube_ascii.stl");
+        auto result = Stl::load("./files/cube_ascii.stl");
+        std::cout << "HUHU";
+        m_o3Dobject = *result;
     };
 
     C3DObject m_o3Dobject;
