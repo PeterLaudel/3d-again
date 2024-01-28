@@ -6,9 +6,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 // Include GLFW
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <fstream>
 #include <streambuf>
+#include <algorithm>
 
 std::optional<GLFWwindow *> initWindow()
 {
@@ -34,6 +36,9 @@ std::optional<GLFWwindow *> initWindow()
         return {};
     }
     glfwMakeContextCurrent(window); // Initialize GLEW
+
+    gladLoadGL();
+
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     return window;
 };
@@ -59,7 +64,6 @@ std::optional<GLuint> compileShader(std::string filename, GLenum shaderType)
     {
         return {};
     }
-    std::cout << *shader;
     auto shaderId = glCreateShader(shaderType);
     auto src = (*shader).c_str();
     glShaderSource(shaderId, 1, &src, nullptr);
@@ -132,9 +136,31 @@ std::optional<GLuint> loadBasicProgram()
     return programId;
 }
 
+GLuint loadBuffers(const C3DObject &object)
+{
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f,
+        0.0f, 0.5f, 0.0f};
+    GLuint VAO;
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
+    GLuint VBO;
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    auto const &points = object.points();
+    auto value_type_size = sizeof(decltype(points.back()));
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+    glEnableVertexAttribArray(0);
+
+    return VAO;
+}
+
 int main()
 {
-    auto objectResult = Stl::load("./files/cube_ascii.stl");
+    auto objectResult = Stl::load("./files/triangle.stl");
     if (!objectResult)
         return 0;
 
@@ -145,18 +171,18 @@ int main()
     auto programResult = loadBasicProgram();
     if (!programResult)
         return 0;
-    // glUseProgram(*programResult);
+    auto buffer = loadBuffers(*objectResult);
 
-    auto &object = *objectResult;
     auto window = *windowResult;
 
     do
     {
-        // Clear the screen. It's not mentioned before Tutorial 02, but it can cause flickering, so it's there nonetheless.
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-
         // Draw nothing, see you in tutorial 2 !
-
+        glUseProgram(*programResult);
+        glBindVertexArray(buffer);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
         // Swap buffers
         glfwSwapBuffers(window);
         glfwPollEvents();

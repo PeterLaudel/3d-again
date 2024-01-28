@@ -5,7 +5,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
-find_package(glfw3)
+find_package(glfw3 REQUIRED)
+find_package(glad REQUIRED)
 
 file(GLOB src "${PROJECT_SOURCE_DIR}/src/**/*.cpp")
 
@@ -28,7 +29,7 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 add_dependencies(${PROJECT_NAME} files)
 add_dependencies(${PROJECT_NAME} shaders)
-target_link_libraries(${PROJECT_NAME} src_lib OpenGL::GL GLUT::GLUT glfw)
+target_link_libraries(${PROJECT_NAME} src_lib OpenGL::GL GLUT::GLUT glfw glad::glad)
 
 target_include_directories(${PROJECT_NAME} PUBLIC 
   ${OPENGL_INCLUDE_DIRS}

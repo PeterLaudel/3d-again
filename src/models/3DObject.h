@@ -16,7 +16,7 @@ public:
         m_points.emplace_back(point);
     }
 
-    std::vector<cPoint> &points() { return this->m_points; };
+    const std::vector<cPoint> &points() const { return this->m_points; };
 
 private:
     std::vector<cPoint> m_points;
