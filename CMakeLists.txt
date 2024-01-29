@@ -10,33 +10,27 @@ find_package(glad REQUIRED)
 
 file(GLOB src "${PROJECT_SOURCE_DIR}/src/**/*.cpp")
 
-add_custom_target(files ALL
-  COMMAND ${CMAKE_COMMAND} -E copy_directory
-  ${CMAKE_SOURCE_DIR}/tests/files
-  ${CMAKE_BINARY_DIR}/files
-)
+add_custom_target(
+  files ALL COMMAND ${CMAKE_COMMAND} -E copy_directory
+                    ${CMAKE_SOURCE_DIR}/tests/files ${CMAKE_BINARY_DIR}/files)
 
-add_custom_target(shaders ALL
-  COMMAND ${CMAKE_COMMAND} -E copy_directory
-  ${CMAKE_SOURCE_DIR}/src/shaders
-  ${CMAKE_BINARY_DIR}/shaders
-)
+add_custom_target(
+  shaders ALL
+  COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders
+          ${CMAKE_BINARY_DIR}/shaders)
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
 add_library(src_lib ${src})
 add_executable(${PROJECT_NAME} main.cpp)
 
-
 add_dependencies(${PROJECT_NAME} files)
 add_dependencies(${PROJECT_NAME} shaders)
-target_link_libraries(${PROJECT_NAME} src_lib OpenGL::GL GLUT::GLUT glfw glad::glad)
+target_link_libraries(${PROJECT_NAME} src_lib OpenGL::GL GLUT::GLUT glfw
+                      glad::glad)
 
-target_include_directories(${PROJECT_NAME} PUBLIC 
-  ${OPENGL_INCLUDE_DIRS}
-  ${GLUT_INCLUDE_DIRS}
-  ${GLFW_INCLUDE_DIRS}
-)
-
+target_include_directories(
+  ${PROJECT_NAME} PUBLIC ${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS}
+                         ${GLFW_INCLUDE_DIRS})
 
 add_custom_target(
   run
@@ -49,13 +43,8 @@ enable_testing()
 file(GLOB tests "${PROJECT_SOURCE_DIR}/tests/*.cpp"
      "${PROJECT_SOURCE_DIR}/tests/**/*.cpp")
 
-MESSAGE(${CMAKE_CXX_COMPILER_ID})
 add_executable(${PROJECT_NAME}_test ${tests})
 target_include_directories(${PROJECT_NAME}_test PUBLIC ${GTest_INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME}_test GTest::gtest GTest::gtest_main
                       GTest::gmock src_lib)
-add_test(
-  NAME ${PROJECT_NAME}_test
-  COMMAND ${PROJECT_NAME}_test
-  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tests/files
-)
+add_test(NAME ${PROJECT_NAME}_test COMMAND ${PROJECT_NAME}_test)
