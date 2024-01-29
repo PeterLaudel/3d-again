@@ -18,7 +18,7 @@ std::istream &operator>>(std::istream &is, Line &line)
     return std::getline(is, line);
 }
 
-std::istream &operator>>(std::stringstream &is, cPoint point)
+std::istream &operator>>(std::stringstream &is, cPoint &point)
 {
     std::string operation;
     is >> operation >> point.x >> point.y >> point.z;

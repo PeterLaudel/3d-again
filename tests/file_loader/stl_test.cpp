@@ -21,8 +21,7 @@ class AStlFileLoader : public Test
 protected:
     void SetUp() override
     {
-        auto result = Stl::load("./files/cube_ascii.stl");
-        std::cout << "HUHU";
+        auto result = Stl::load("./files/triangle.stl");
         m_o3Dobject = *result;
     };
 
@@ -31,5 +30,9 @@ protected:
 
 TEST_F(AStlFileLoader, AddsAllPointsTo3DObject)
 {
-    EXPECT_EQ(m_o3Dobject.points().size(), 36);
+    auto const &points = m_o3Dobject.points();
+    EXPECT_EQ(points.size(), 3);
+    EXPECT_EQ(points[0], cPoint(-0.5f, -0.5f, 0.0f));
+    EXPECT_EQ(points[1], cPoint(0.5, -0.5, 0.0));
+    EXPECT_EQ(points[2], cPoint(0.0, 0.5, 0.0));
 };
