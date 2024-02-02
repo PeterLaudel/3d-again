@@ -21,6 +21,7 @@ add_custom_target(
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
 add_library(src_lib ${src})
+target_link_libraries(src_lib glad::glad)
 add_executable(${PROJECT_NAME} main.cpp)
 
 add_dependencies(${PROJECT_NAME} files)
@@ -32,11 +33,6 @@ target_include_directories(
   ${PROJECT_NAME} PUBLIC ${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS}
                          ${GLFW_INCLUDE_DIRS})
 
-add_custom_target(
-  run
-  COMMAND ${PROJECT_NAME}
-  DEPENDS ${PROJECT_NAME}
-  WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 find_package(GTest REQUIRED)
 enable_testing()
 

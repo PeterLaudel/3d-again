@@ -10,7 +10,10 @@
 #include <GLFW/glfw3.h>
 #include <fstream>
 #include <streambuf>
+#include <variant>
 #include <algorithm>
+
+#include "drawer/3DObjectDrawer.h"
 
 std::optional<GLFWwindow *> initWindow()
 {
@@ -136,32 +139,14 @@ std::optional<GLuint> loadBasicProgram()
     return programId;
 }
 
-GLuint loadBuffers(const C3DObject &object)
-{
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.0f, 0.5f, 0.0f};
-    GLuint VAO;
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
-
-    GLuint VBO;
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    auto const &points = object.points();
-    auto value_type_size = sizeof(decltype(points.back()));
-    glBufferData(GL_ARRAY_BUFFER, sizeof(points.size()) * sizeof(float), &points[0], GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
-    glEnableVertexAttribArray(0);
-
-    return VAO;
-}
-
 int main()
 {
-    auto objectResult = Stl::load("./files/triangle.stl");
-    if (!objectResult)
+    auto cubeResult = Stl::load("./files/cube_ascii.stl");
+    if (!cubeResult)
+        return 0;
+
+    auto triangleResult = Stl::load("./files/triangle.stl");
+    if (!triangleResult)
         return 0;
 
     auto windowResult = initWindow();
@@ -171,19 +156,28 @@ int main()
     auto programResult = loadBasicProgram();
     if (!programResult)
         return 0;
-    auto buffer = loadBuffers(*objectResult);
 
     auto window = *windowResult;
+
+    std::vector<C3DObject> vec;
+    vec.push_back(*cubeResult);
+    vec.push_back(*triangleResult);
+
+    for (auto &v : vec)
+    {
+        v.setDrawer(C3DObjectDrawer());
+    }
 
     do
     {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        // Draw nothing, see you in tutorial 2 !
         glUseProgram(*programResult);
-        glBindVertexArray(buffer);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        // Swap buffers
+
+        for (auto &v : vec)
+        {
+            v.draw();
+        }
         glfwSwapBuffers(window);
         glfwPollEvents();
 
