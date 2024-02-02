@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <string>
 
+#include <glm/vec3.hpp>
+
 class Line : public std::string
 {
 };
@@ -18,7 +20,7 @@ std::istream &operator>>(std::istream &is, Line &line)
     return std::getline(is, line);
 }
 
-std::istream &operator>>(std::stringstream &is, cPoint &point)
+std::istream &operator>>(std::stringstream &is, glm::vec3 &point)
 {
     std::string operation;
     is >> operation >> point.x >> point.y >> point.z;
@@ -30,21 +32,21 @@ class StlFunctor
 public:
     C3DObject operator()(C3DObject object, const Line &line)
     {
-        if (auto point = this->getPoint(line))
+        if (auto point = this->getVec(line))
         {
-            object.addPoint(*point);
+            object.addVec(*point);
             return object;
         }
         return object;
     }
 
-    std::optional<cPoint> getPoint(const Line &line)
+    std::optional<glm::vec3> getVec(const Line &line)
     {
         if (line.rfind("vertex", 0) != 0)
             return {};
 
         std::stringstream ss(line);
-        cPoint point;
+        glm::vec3 point;
         ss >> point;
         return point;
     };

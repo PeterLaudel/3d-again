@@ -7,6 +7,7 @@ find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glad REQUIRED)
+find_package(glm REQUIRED)
 
 file(GLOB src "${PROJECT_SOURCE_DIR}/src/**/*.cpp")
 
@@ -21,13 +22,19 @@ add_custom_target(
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
 add_library(src_lib ${src})
-target_link_libraries(src_lib glad::glad)
+target_link_libraries(src_lib glad::glad glm::glm)
 add_executable(${PROJECT_NAME} main.cpp)
 
 add_dependencies(${PROJECT_NAME} files)
 add_dependencies(${PROJECT_NAME} shaders)
-target_link_libraries(${PROJECT_NAME} src_lib OpenGL::GL GLUT::GLUT glfw
-                      glad::glad)
+target_link_libraries(
+  ${PROJECT_NAME}
+  src_lib
+  OpenGL::GL
+  GLUT::GLUT
+  glfw
+  glad::glad
+  glm::glm)
 
 target_include_directories(
   ${PROJECT_NAME} PUBLIC ${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS}

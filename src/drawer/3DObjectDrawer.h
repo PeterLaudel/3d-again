@@ -10,7 +10,7 @@ class C3DObjectDrawer
 {
 public:
     C3DObjectDrawer() = default;
-    ~C3DObjectDrawer() = default;
+    ~C3DObjectDrawer();
 
     void operator()(C3DObject const &object);
 

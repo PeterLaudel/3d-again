@@ -4,8 +4,7 @@
 #include <vector>
 #include <optional>
 #include <functional>
-
-#include "point.h"
+#include <glm/vec3.hpp>
 
 class C3DObject
 {
@@ -15,28 +14,14 @@ public:
 
     using C3DObjectDrawer = std::function<void(const C3DObject &)>;
 
-    void setDrawer(C3DObjectDrawer drawer)
-    {
-        m_drawer = drawer;
-    }
+    void setDrawer(C3DObjectDrawer drawer);
+    void draw();
 
-    void draw()
-    {
-        m_drawer(*this);
-    }
-
-    void addPoint(cPoint point)
-    {
-        m_points.emplace_back(point);
-    }
-
-    const std::vector<cPoint> &points() const
-    {
-        return this->m_points;
-    };
+    void addVec(glm::vec3 vec);
+    const std::vector<glm::vec3> &vecs() const;
 
 private:
-    std::vector<cPoint> m_points;
+    std::vector<glm::vec3> m_vecs;
     C3DObjectDrawer m_drawer;
 };
 
