@@ -8,6 +8,7 @@
 #include <GLFW/glfw3.h>
 #include <algorithm>
 #include <fstream>
+#include <memory>
 #include <streambuf>
 #include <variant>
 
@@ -16,11 +17,18 @@
 #include "src/file_loader/stl.h"
 #include "src/models/3DObject.h"
 #include "src/models/camera.h"
+#include "ui/inputDevice.h"
 
-std::optional<GLFWwindow *> initWindow() {
+struct destroyWindow {
+  void operator()(GLFWwindow *ptr) { glfwDestroyWindow(ptr); }
+};
+
+using unique_glfwwindow = std::unique_ptr<GLFWwindow, destroyWindow>;
+
+unique_glfwwindow initWindow() {
   if (!glfwInit()) {
     fprintf(stderr, "Failed to initialize GLFW\n");
-    return {};
+    return unique_glfwwindow(nullptr);
   }
 
   glfwWindowHint(GLFW_SAMPLES, 4);               // 4x antialiasing
@@ -32,21 +40,20 @@ std::optional<GLFWwindow *> initWindow() {
                  GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL
 
   // Open a window and create its OpenGL context
-  GLFWwindow *window; // (In the accompanying source code, this variable is
-                      // global for simplicity)
-  window = glfwCreateWindow(1024, 768, "Tutorial 01", NULL, NULL);
-  if (window == NULL) {
+  unique_glfwwindow window(
+      glfwCreateWindow(1024, 768, "Tutorial 01", NULL, NULL));
+  if (window == nullptr) {
     fprintf(stderr,
             "Failed to open GLFW window. If you have an Intel GPU, they are "
             "not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
     glfwTerminate();
     return {};
   }
-  glfwMakeContextCurrent(window); // Initialize GLEW
+  glfwMakeContextCurrent(window.get()); // Initialize GLEW
 
   gladLoadGL();
 
-  glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+  glfwSetInputMode(window.get(), GLFW_STICKY_KEYS, GL_TRUE);
   return window;
 };
 
@@ -137,35 +144,25 @@ std::optional<GLuint> loadBasicProgram() {
 }
 
 int main() {
-  auto cubeResult = Stl::load("./files/cube_ascii.stl");
-  if (!cubeResult)
-    return 0;
-
-  auto triangleResult = Stl::load("./files/triangle.stl");
-  if (!triangleResult)
-    return 0;
-
-  auto windowResult = initWindow();
-  if (!windowResult)
+  auto window = initWindow();
+  if (!window)
     return 0;
 
   auto programResult = loadBasicProgram();
   if (!programResult)
     return 0;
 
-  auto window = *windowResult;
-
   std::vector<C3DObject> vec;
-  vec.push_back(*cubeResult);
-  vec.push_back(*triangleResult);
+  vec.push_back(*Stl::load("./files/cube_ascii.stl"));
+  vec.push_back(*Stl::load("./files/triangle.stl"));
 
   Camera camera;
-
   camera.setDrawer(CameraDrawer(*programResult));
-
   for (auto &v : vec) {
     v.setDrawer(C3DObjectDrawer());
   }
+
+  InputDevice inputDevice(camera, *window.get());
 
   do {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -173,15 +170,14 @@ int main() {
     glUseProgram(*programResult);
 
     camera.draw();
-
     for (auto &v : vec) {
       v.draw();
     }
-    glfwSwapBuffers(window);
+    glfwSwapBuffers(window.get());
     glfwPollEvents();
-
+    inputDevice.processInput();
   } // Check if the ESC key was pressed or the window was closed
-  while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-         glfwWindowShouldClose(window) == 0);
+  while (glfwGetKey(window.get(), GLFW_KEY_ESCAPE) != GLFW_PRESS &&
+         glfwWindowShouldClose(window.get()) == 0);
   return 0;
 }
