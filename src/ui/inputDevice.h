@@ -6,8 +6,7 @@ class GLFWwindow;
 
 class InputDevice {
 public:
-  InputDevice(Camera &camera, GLFWwindow &window)
-      : m_camera(camera), m_window(window){};
+  InputDevice(Camera &camera, GLFWwindow &window);
   ~InputDevice() = default;
 
   void processInput();
@@ -15,6 +14,8 @@ public:
 private:
   Camera &m_camera;
   GLFWwindow &m_window;
+  bool m_mousePressed;
+  double m_mousePosX, m_mousePosY;
 };
 
 #endif /* __INPUTDEVICE__ */
