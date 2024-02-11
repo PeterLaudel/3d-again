@@ -159,7 +159,7 @@ int main() {
   Camera camera;
   camera.setDrawer(CameraDrawer(*programResult));
   for (auto &v : vec) {
-    v.setDrawer(C3DObjectDrawer());
+    v.setDrawer(C3DObjectDrawer(*programResult));
   }
 
   InputDevice inputDevice(camera, *window.get());

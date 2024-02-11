@@ -23,8 +23,8 @@ void InputDevice::processInput() {
     if (m_mousePressed) {
       double mousePosX, mousePosY;
       glfwGetCursorPos(&m_window, &mousePosX, &mousePosY);
-      m_camera.addYaw(mousePosX - m_mousePosX);
-      m_camera.addPitch(mousePosY - m_mousePosY);
+      m_camera.addYaw((mousePosX - m_mousePosX) * 0.1f);
+      m_camera.addPitch((mousePosY - m_mousePosY) * 0.1f);
       m_mousePosX = mousePosX;
       m_mousePosY = mousePosY;
     } else {

@@ -7,9 +7,7 @@
 
 class Camera {
 public:
-  Camera(glm::vec3 pos = glm::vec3(0.0f, 0.0, 3.0f),
-         glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f),
-         glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f));
+  Camera();
   ~Camera();
 
   using CameraDrawer = std::function<void(Camera const &)>;
@@ -33,11 +31,6 @@ private:
   float m_yaw;
   float m_pitch;
   glm::vec3 m_pos;
-  glm::vec3 m_front;
-  glm::vec3 m_up;
-  glm::vec3 m_left;
-  glm::mat4 m_view;
-  glm::mat4 m_projection;
   CameraDrawer m_drawer;
 };
 

@@ -7,7 +7,7 @@
 
 class C3DObjectDrawer {
 public:
-  C3DObjectDrawer() = default;
+  C3DObjectDrawer(uint32_t programId) : m_programId(programId){};
   ~C3DObjectDrawer();
 
   void operator()(C3DObject const &object);
@@ -16,6 +16,7 @@ private:
   GLuint load(C3DObject const &object);
 
   std::optional<GLuint> m_vao;
+  uint32_t m_programId;
 };
 
 #endif // __3DOBJECTDRAWER__

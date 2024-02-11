@@ -1,4 +1,5 @@
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "3DObjectDrawer.h"
 
@@ -14,6 +15,9 @@ void C3DObjectDrawer::operator()(const C3DObject &object) {
   if (!m_vao) {
     m_vao.emplace(load(object));
   }
+  int projectionLoc = glGetUniformLocation(m_programId, "model");
+  glUniformMatrix4fv(projectionLoc, 1, GL_FALSE,
+                     glm::value_ptr(object.matrix()));
 
   glBindVertexArray(*m_vao);
   glDrawArrays(GL_TRIANGLES, 0, object.vecs().size());
