@@ -8,4 +8,4 @@ void C3DObject::draw() { m_drawer(*this); }
 
 void C3DObject::addVec(glm::vec3 vec) { m_vecs.emplace_back(vec); }
 
-const std::vector<glm::vec3> &C3DObject::vecs() const { return m_vecs; }
+std::vector<glm::vec3> const &C3DObject::vecs() const { return m_vecs; }

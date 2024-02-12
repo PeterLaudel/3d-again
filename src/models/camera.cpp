@@ -4,7 +4,7 @@
 #include <glm/gtx/euler_angles.hpp>
 
 Camera::Camera()
-    : m_yaw(-90.0), m_pitch(0.0), m_pos(glm::vec3(0.0, 0.0, 0.5)) {}
+    : m_yaw(-90.0), m_pitch(0.0), m_pos(glm::vec3(0.0, 0.0, 30.0)) {}
 
 Camera::~Camera() {}
 

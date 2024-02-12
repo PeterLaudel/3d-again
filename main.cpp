@@ -154,7 +154,8 @@ int main() {
 
   std::vector<C3DObject> vec;
   vec.push_back(*Stl::load("./files/cube_ascii.stl"));
-  vec.push_back(*Stl::load("./files/triangle.stl"));
+  // vec.push_back(*Stl::load("./files/triangle.stl"));
+  // vec.push_back(*Stl::load("./files/20mm_cube.stl"));
 
   Camera camera;
   camera.setDrawer(CameraDrawer(*programResult));

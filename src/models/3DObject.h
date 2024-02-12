@@ -18,7 +18,7 @@ public:
   void draw();
 
   void addVec(glm::vec3 vec);
-  const std::vector<glm::vec3> &vecs() const;
+  std::vector<glm::vec3> const &vecs() const;
 
   glm::mat4 const &matrix() const { return m_modelMatrix; }
 
