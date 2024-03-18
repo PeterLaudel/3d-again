@@ -3,7 +3,7 @@
 
 #include <optional>
 
-#include "models/3DObject.h"
+class C3DObject;
 
 class C3DObjectDrawer {
 public:
@@ -13,9 +13,9 @@ public:
   void operator()(C3DObject const &object);
 
 private:
-  GLuint load(C3DObject const &object);
+  uint32_t load(C3DObject const &object);
 
-  std::optional<GLuint> m_vao;
+  std::optional<uint32_t> m_vao;
   uint32_t m_programId;
 };
 

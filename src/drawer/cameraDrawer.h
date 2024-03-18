@@ -5,7 +5,7 @@ class Camera;
 
 class CameraDrawer {
 public:
-  CameraDrawer(u_int32_t programId) : m_programId(programId){};
+  CameraDrawer(uint32_t programId) : m_programId(programId){};
   ~CameraDrawer() = default;
 
   void operator()(Camera const &camera);

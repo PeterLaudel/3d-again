@@ -1,15 +1,14 @@
 #ifndef __STL__
 #define __STL__
 
-#include <string>
 #include <optional>
+#include <string>
 
-#include "models/3DObject.h"
+#include "../models/3DObject.h"
 
-class Stl
-{
+class Stl {
 public:
-    static std::optional<C3DObject> load(const std::string &strFilename);
+  static std::optional<C3DObject> load(const std::string &strFilename);
 };
 
 #endif /* __STL__ */

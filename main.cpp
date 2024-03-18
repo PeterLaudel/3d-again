@@ -12,12 +12,12 @@
 #include <streambuf>
 #include <variant>
 
-#include "drawer/3DObjectDrawer.h"
-#include "drawer/cameraDrawer.h"
-#include "src/file_loader/stl.h"
-#include "src/models/3DObject.h"
-#include "src/models/camera.h"
-#include "ui/inputDevice.h"
+#include <drawer/3DObjectDrawer.h>
+#include <drawer/cameraDrawer.h>
+#include <file_loader/stl.h>
+#include <models/3DObject.h>
+#include <models/camera.h>
+#include <ui/inputDevice.h>
 
 struct destroyWindow {
   void operator()(GLFWwindow *ptr) { glfwDestroyWindow(ptr); }

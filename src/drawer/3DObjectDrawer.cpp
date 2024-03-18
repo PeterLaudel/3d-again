@@ -2,6 +2,9 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "3DObjectDrawer.h"
+
+#include "../models/3DObject.h"
+
 C3DObjectDrawer::~C3DObjectDrawer() {
   if (m_vao) {
 

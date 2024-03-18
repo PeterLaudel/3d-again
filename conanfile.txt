@@ -4,6 +4,7 @@ glfw/3.3.8
 glm/cci.20230113
 gtest/1.14.0
 opengl/system
+qt/5.15.12
 
 [options]
 glad*:profile=core

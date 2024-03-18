@@ -1,6 +1,7 @@
-#include "models/camera.h"
+#include "../models/camera.h"
 
 #include "cameraDrawer.h"
+
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 
