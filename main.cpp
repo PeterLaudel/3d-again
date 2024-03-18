@@ -2,15 +2,11 @@
 
 // Include standard headers
 #include <glad/glad.h>
-#include <stdio.h>
-#include <stdlib.h>
 // Include GLFW
 #include <GLFW/glfw3.h>
-#include <algorithm>
 #include <fstream>
 #include <memory>
 #include <streambuf>
-#include <variant>
 
 #include <drawer/3DObjectDrawer.h>
 #include <drawer/cameraDrawer.h>
