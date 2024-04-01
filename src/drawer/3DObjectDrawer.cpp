@@ -19,7 +19,7 @@ void C3DObjectDrawer::operator()(const C3DObject &object)
   if (!m_vao)
     m_vao.emplace(load(object));
 
-  int projectionLoc = glGetUniformLocation(m_programId, "model");
+  int projectionLoc = glGetUniformLocation(m_program.id(), "model");
   glUniformMatrix4fv(projectionLoc, 1, GL_FALSE,
                      glm::value_ptr(object.matrix()));
 

@@ -9,16 +9,10 @@ add_custom_target(
   files ALL COMMAND ${CMAKE_COMMAND} -E copy_directory
                     ${CMAKE_SOURCE_DIR}/tests/files ${CMAKE_BINARY_DIR}/files)
 
-add_custom_target(
-  shaders ALL
-  COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders
-          ${CMAKE_BINARY_DIR}/shaders)
-
 add_executable(${PROJECT_NAME} main.cpp)
 target_link_libraries(${PROJECT_NAME} src_lib)
 
 add_dependencies(${PROJECT_NAME} files)
-add_dependencies(${PROJECT_NAME} shaders)
 
 enable_testing()
 add_subdirectory(tests)

@@ -3,15 +3,18 @@
 
 class Camera;
 
-class CameraDrawer {
+#include "../shaders/program.h"
+
+class CameraDrawer
+{
 public:
-  CameraDrawer(uint32_t programId) : m_programId(programId){};
+  CameraDrawer(Program &program) : m_program(program){};
   ~CameraDrawer() = default;
 
   void operator()(Camera const &camera);
 
 private:
-  uint32_t m_programId;
+  Program &m_program;
 };
 
 #endif /* __CAMERA_DRAWER__ */

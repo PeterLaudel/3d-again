@@ -5,9 +5,12 @@
 
 class C3DObject;
 
-class C3DObjectDrawer {
+#include "../shaders/program.h"
+
+class C3DObjectDrawer
+{
 public:
-  C3DObjectDrawer(uint32_t programId) : m_programId(programId){};
+  C3DObjectDrawer(Program &program) : m_program(program){};
   ~C3DObjectDrawer();
 
   void operator()(C3DObject const &object);
@@ -16,7 +19,7 @@ private:
   uint32_t load(C3DObject const &object);
 
   std::optional<uint32_t> m_vao;
-  uint32_t m_programId;
+  Program m_program;
 };
 
 #endif // __3DOBJECTDRAWER__

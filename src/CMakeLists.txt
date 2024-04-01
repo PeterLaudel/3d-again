@@ -13,3 +13,16 @@ target_link_libraries(src_lib PUBLIC glm::glm glad::glad glfw)
 target_include_directories(
   src_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${GLAD_INCLUDE_DIRS}
                  ${GLFW_INCLUDE_DIRS})
+
+
+add_custom_command(
+     TARGET src_lib POST_BUILD
+COMMAND ${CMAKE_COMMAND} -E copy
+$<TARGET_PROPERTY:src_lib,SOURCE_DIR>/shaders/fragment.shader ${CMAKE_BINARY_DIR}/shaders/fragment.shader
+)
+
+add_custom_command(
+     TARGET src_lib POST_BUILD
+COMMAND ${CMAKE_COMMAND} -E copy
+$<TARGET_PROPERTY:src_lib,SOURCE_DIR>/shaders/vertex.shader ${CMAKE_BINARY_DIR}/shaders/vertex.shader
+)
