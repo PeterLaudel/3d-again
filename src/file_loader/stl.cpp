@@ -30,11 +30,21 @@ std::istream &operator>>(std::stringstream &is, glm::vec3 &point)
 class StlFunctor
 {
 public:
+    StlFunctor(){
+        m_lastTriangleIndices.reserve(3);
+    };
+
     C3DObject operator()(C3DObject object, const Line &line)
     {
         if (auto point = this->getVec(line))
         {
             object.addVec(*point);
+            m_lastTriangleIndices.push_back(object.vecs().size() - 1);
+            return object;
+        }
+        else if (auto triangle = this->getTriangle(line))
+        {
+            object.addTriangle(*triangle);
             return object;
         }
         return object;
@@ -50,6 +60,25 @@ public:
         ss >> point;
         return point;
     };
+
+    std::optional<glm::uvec3> getTriangle(const Line &line)
+    {
+        if (line.rfind("endloop", 0) != 0)
+            return {};
+        auto triangle =  glm::uvec3(
+            m_lastTriangleIndices[0],
+            m_lastTriangleIndices[1],
+            m_lastTriangleIndices[2]
+        );
+
+        m_lastTriangleIndices.clear();
+        return triangle;
+    };
+
+    private:
+
+    std::vector<uint32_t> m_lastTriangleIndices;
+
 };
 
 std::optional<C3DObject> Stl::load(const std::string &filename)
