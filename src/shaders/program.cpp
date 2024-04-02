@@ -12,45 +12,41 @@ Program::Program(uint32_t programId)
 
 Program::~Program()
 {
+    glDeleteProgram(m_programId);
 }
 
-Program Program::create(
-    std::string const &vertexShaderSource,
-    std::string const &fragmentShaderSource)
+bool Program::verify() const
 {
-
-    auto vertexShader = Shader::createVertexShader(vertexShaderSource);
-    auto fragmentShader = Shader::createFragmentShader(fragmentShaderSource);
-
-    auto programId = glCreateProgram();
-    glAttachShader(programId, vertexShader.m_shaderId);
-    glAttachShader(programId, fragmentShader.m_shaderId);
-
-    glLinkProgram(programId);
-
     GLint isLinked = 0;
-    glGetProgramiv(programId, GL_LINK_STATUS, &isLinked);
+    glGetProgramiv(m_programId, GL_LINK_STATUS, &isLinked);
     if (isLinked == GL_FALSE)
     {
         GLint maxLength = 0;
-        glGetProgramiv(programId, GL_INFO_LOG_LENGTH, &maxLength);
+        glGetProgramiv(m_programId, GL_INFO_LOG_LENGTH, &maxLength);
 
         // The maxLength includes the NULL character
         std::string infoLog(maxLength, '\0');
-        glGetProgramInfoLog(programId, maxLength, &maxLength, &infoLog[0]);
+        glGetProgramInfoLog(m_programId, maxLength, &maxLength, &infoLog[0]);
 
         std::cout << infoLog;
-
-        // We don't need the program anymore.
-        glDeleteProgram(programId);
-        // Don't leak shaders either.
-        glDeleteShader(vertexShader.m_shaderId);
-        glDeleteShader(fragmentShader.m_shaderId);
+        return false;
     }
+    return true;
+}
 
-    // Always detach shaders after a successful link.
-    glDetachShader(programId, vertexShader.m_shaderId);
-    glDetachShader(programId, fragmentShader.m_shaderId);
+Program Program::create(
+    Shader const &vertexShader,
+    Shader const &fragmentShader)
+{
+
+    auto programId = glCreateProgram();
+    glAttachShader(programId, vertexShader.id());
+    glAttachShader(programId, fragmentShader.id());
+
+    glLinkProgram(programId);
+
+    glDetachShader(programId, vertexShader.id());
+    glDetachShader(programId, fragmentShader.id());
 
     return Program(programId);
 }

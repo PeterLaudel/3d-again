@@ -6,14 +6,18 @@
 class Shader
 {
 public:
-    Shader(uint32_t shaderId);
     ~Shader();
 
     static Shader createVertexShader(
-        std::string const &shaderSource);
+        std::string shaderSource);
 
     static Shader createFragmentShader(
-        std::string const &shaderSource);
+        std::string shaderSource);
+
+    uint32_t id() const { return m_shaderId; }
+
+private:
+    Shader(uint32_t shaderId);
 
     uint32_t m_shaderId;
 };

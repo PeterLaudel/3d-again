@@ -3,6 +3,8 @@
 
 #include <optional>
 
+class Shader;
+
 class Program
 {
 public:
@@ -10,9 +12,11 @@ public:
 
     const uint32_t id() const { return m_programId; }
 
+    bool verify() const;
+
     static Program create(
-        std::string const &vertexShaderSource,
-        std::string const &fragmentShaderSource);
+        Shader const &vertexShaderSource,
+        Shader const &fragmentShaderSource);
 
 private:
     Program(uint32_t programId);

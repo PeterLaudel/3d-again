@@ -19,7 +19,7 @@ private:
   uint32_t load(C3DObject const &object);
 
   std::optional<uint32_t> m_vao;
-  Program m_program;
+  Program &m_program;
 };
 
 #endif // __3DOBJECTDRAWER__

@@ -44,15 +44,16 @@ Shader::Shader(uint32_t shaderId) : m_shaderId(shaderId)
 
 Shader::~Shader()
 {
+    glDeleteShader(this->id());
 }
 
-Shader Shader::createVertexShader(std::string const &shaderSource)
+Shader Shader::createVertexShader(std::string shaderSource)
 {
     auto shaderId = create(shaderSource, GL_VERTEX_SHADER);
     return Shader(*shaderId);
 }
 
-Shader Shader::createFragmentShader(std::string const &shaderSource)
+Shader Shader::createFragmentShader(std::string shaderSource)
 {
     auto shaderId = create(shaderSource, GL_FRAGMENT_SHADER);
     return Shader(*shaderId);

@@ -14,6 +14,7 @@
 #include <models/3DObject.h>
 #include <models/camera.h>
 #include <ui/inputDevice.h>
+#include <shaders/shader.h>
 #include <shaders/program.h>
 
 struct destroyWindow
@@ -64,8 +65,15 @@ int main()
   if (!window)
     return 0;
 
-  auto program = Program::create("./shaders/vertex.shader",
-                                 "./shaders/fragment.shader");
+  auto vertexShader = Shader::createVertexShader("./shaders/vertex.shader");
+  auto fragmentShader =
+      Shader::createFragmentShader("./shaders/fragment.shader");
+
+  auto program = Program::create(vertexShader, fragmentShader);
+  if (!program.verify())
+  {
+    return 0;
+  }
 
   std::vector<C3DObject> vec;
   vec.push_back(*Stl::load("./files/cube_ascii.stl"));
