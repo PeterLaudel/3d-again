@@ -1,6 +1,6 @@
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
-
+#include <iostream>
 #include "3DObjectDrawer.h"
 
 #include "../models/3DObject.h"
@@ -23,33 +23,38 @@ void C3DObjectDrawer::operator()(const C3DObject &object)
   glUniformMatrix4fv(projectionLoc, 1, GL_FALSE,
                      glm::value_ptr(object.matrix()));
 
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *m_vao);
+  glBindVertexArray(*m_vao);
   glDrawElements(GL_TRIANGLES, object.triangles().size() * 3, GL_UNSIGNED_INT,
                  0);
+  glBindVertexArray(0);
 }
 
 GLuint C3DObjectDrawer::load(const C3DObject &object)
 {
   GLuint VAO;
+  GLuint VBO;
+  GLuint EBO;
   glGenVertexArrays(1, &VAO);
+  glGenBuffers(1, &VBO);
+  glGenBuffers(1, &EBO);
+
   glBindVertexArray(VAO);
 
-  GLuint VBO;
-  glGenBuffers(1, &VBO);
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   auto const &points = object.vecs();
-  auto value_type_size = sizeof(decltype(points.back()));
-  glEnableVertexAttribArray(0);
-  glBufferData(GL_ARRAY_BUFFER, points.size() * value_type_size, points.data(),
+  auto pointsSize = points.size() * sizeof(points[0]);
+  glBufferData(GL_ARRAY_BUFFER, pointsSize, &points[0],
                GL_STATIC_DRAW);
+  glEnableVertexAttribArray(0);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-  GLuint EBO;
-  glGenBuffers(1, &EBO);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
   auto const &triangles = object.triangles();
-  auto triangles_size = triangles.size() * sizeof(decltype(triangles.back()));
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, triangles_size, triangles.data(),
+  auto triangleSize = triangles.size() * sizeof(triangles[0]);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, triangleSize, &triangles[0],
                GL_STATIC_DRAW);
-  return EBO;
+
+  glBindVertexArray(0);
+
+  return VAO;
 }

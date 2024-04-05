@@ -6,7 +6,8 @@
 
 #include "../models/3DObject.h"
 
-class Stl {
+class Stl
+{
 public:
   static std::optional<C3DObject> load(const std::string &strFilename);
 };

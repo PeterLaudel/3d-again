@@ -7,7 +7,8 @@
 #include <optional>
 #include <vector>
 
-class C3DObject {
+class C3DObject
+{
 public:
   C3DObject() = default;
   ~C3DObject() = default;
@@ -29,7 +30,7 @@ private:
   std::vector<glm::vec3> m_vecs;
   std::vector<glm::uvec3> m_triangles;
   C3DObjectDrawer m_drawer;
-  glm::mat4 m_modelMatrix{ glm::mat4(1.0)};
+  glm::mat4 m_modelMatrix{glm::mat4(1.0)};
 };
 
 #endif /* __3DOBJECT__ */
